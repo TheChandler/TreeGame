@@ -21,8 +21,10 @@ public class TreeCarer extends Building {
     @Override
     public void update() {
         for (int i =0;i<10;i++){
-            if (tm.trees[i]!=null&&tm.trees[i].getClass().getName().compareTo("com.mygdx.game.Tree")==0){
-                tm.trees[i].interact();
+            for (int j=0;j<10;j++) {
+                if (tm.trees[i] != null && tm.trees[i].getClass().getName().compareTo("com.mygdx.game.Tree") == 0) {
+                    tm.trees[i][j].interact();
+                }
             }
         }
     }

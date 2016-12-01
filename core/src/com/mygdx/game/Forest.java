@@ -17,11 +17,14 @@ import com.badlogic.gdx.input.GestureDetector;
 
 public class Forest extends State {
     GameStateManager gsm;
-    Texture grass=new Texture("grass.png");
-    Texture sky=new Texture("sky.png");
-    Texture sunBall=new Texture("sunBall.png");
-    Texture sunRays=new Texture("sunRays.png");
-    Texture dot = new Texture("dot.png");
+    Texture grass       =new Texture("grass.png");
+    Texture sky         =new Texture("sky.png");
+    Texture sunBall     =new Texture("sunBall.png");
+    Texture sunRays     =new Texture("sunRays.png");
+    Texture dot         =new Texture("dot.png");
+    Texture underground=new Texture("underground.png");
+
+    Texture[] numbers;
 
     TreeManager tm;
     float time=0;
@@ -30,14 +33,19 @@ public class Forest extends State {
     boolean isTouched;
     float rotation=0;
 
-    int touchX,touchY;
-
-
+    static int touchX=0,touchY=0;
 
     public Forest(GameStateManager gsm){
         super(gsm);
-        tm=new TreeManager();
+        tm=new TreeManager(this);
         isTouched=false;
+        setNumberTextures();
+    }
+    private void setNumberTextures(){
+        numbers=new Texture[10];
+        for (int i=0;i<10;i++){
+            numbers[i]=new Texture(String.valueOf(i)+".png");
+        }
     }
 
 
@@ -59,16 +67,19 @@ public class Forest extends State {
                     super.mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
                     super.cam.unproject(super.mouse);
                     tm.interact();
-                } else if (sd.getDirection() == 1) {
+                } else if (sd.getDirection() == 2) {
                     tm.goRight();
-                } else if (sd.getDirection() == -1) {
+                } else if (sd.getDirection() == 4) {
                     tm.goLeft();
+                } else if (sd.getDirection() == 1){
+                    tm.goUp();
+                } else if (sd.getDirection() == 3){
+                    tm.goDown();
                 }
             }
         }else{
             if (Gdx.input.isTouched()){
                 isTouched=true;
-
             }
         }
 
@@ -78,7 +89,7 @@ public class Forest extends State {
     public void update(float dt) {
         handleInput();
         time+=dt;
-        if (time>.2){
+        if (time>0){
             time=0;
             tm.update();
         }
@@ -86,11 +97,16 @@ public class Forest extends State {
 
     @Override
     public void render(SpriteBatch sb) {
-
         sb.draw(sky,0,0);
-        sb.draw(grass,Gdx.input.getDeltaX(),0);
+        if(tm.currentTree.y>0) {
+            sb.draw(underground,tm.xPos,tm.yPos);
+        }else{
+            sb.draw(grass, tm.xPos, tm.yPos);
+        }
         sb.draw(sunBall,0,0);
         sb.draw(sunRays,1080-480,1920-480,422,422,844,844,1,1,rotate(),0,0,844,844,false,false);
+        sb.draw(numbers[(int)tm.currentTree.x],0,0);
+        sb.draw(numbers[(int)tm.currentTree.y],100,0);
         sb.draw(dot,touchX,touchY);
         tm.render(sb);
     }
