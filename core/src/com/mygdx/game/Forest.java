@@ -17,17 +17,14 @@ import com.badlogic.gdx.input.GestureDetector;
 
 public class Forest extends State {
     GameStateManager gsm;
-    Texture grass       =new Texture("grass.png");
     Texture sky         =new Texture("sky.png");
     Texture sunBall     =new Texture("sunBall.png");
     Texture sunRays     =new Texture("sunRays.png");
     Texture dot         =new Texture("dot.png");
-    Texture underground=new Texture("underground.png");
 
     Texture[] numbers;
 
     TreeManager tm;
-    float time=0;
     SwipeDetector sd=new SwipeDetector();
     MyInputProcessor mip =new MyInputProcessor();
     boolean isTouched;
@@ -88,21 +85,13 @@ public class Forest extends State {
     @Override
     public void update(float dt) {
         handleInput();
-        time+=dt;
-        if (time>0){
-            time=0;
-            tm.update();
-        }
+        tm.update(dt);
     }
 
     @Override
     public void render(SpriteBatch sb) {
         sb.draw(sky,0,0);
-        if(tm.currentTree.y>0) {
-            sb.draw(underground,tm.xPos,tm.yPos);
-        }else{
-            sb.draw(grass, tm.xPos, tm.yPos);
-        }
+
         sb.draw(sunBall,0,0);
         sb.draw(sunRays,1080-480,1920-480,422,422,844,844,1,1,rotate(),0,0,844,844,false,false);
         sb.draw(numbers[(int)tm.currentTree.x],0,0);

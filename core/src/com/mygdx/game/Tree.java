@@ -71,7 +71,7 @@ public class Tree extends Building {
                 killTree();
             }
             sunLevel+=1;
-            if (sunLevel >= state * 150 && state < 3 && waterLevel > 0) {
+            if (sunLevel >= state * (100+(50*state-1)) && state < 3 && waterLevel > 0) {
                 upgrade();
             }
         }
