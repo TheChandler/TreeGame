@@ -2,6 +2,8 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+
 /**
  * Created by Chandler on 11/18/2016.
  */
@@ -49,9 +51,10 @@ public class Tree extends Building {
     }
     private void killTree(){
         deleteThis = true;
-        state=0;
-        sunLevel=0;
-        texture=new Texture("tree0.png");
+        texture.dispose();
+        dirt.dispose();
+        sun.dispose();
+        water.dispose();
     }
     public void interact(){
         if (state==0){
@@ -76,15 +79,15 @@ public class Tree extends Building {
             }
         }
     }
-    public void render(SpriteBatch sb){
-        sb.draw(dirt,0,0);
-        sb.draw(texture,0,0);
+    public void render(SpriteBatch sb,Vector2 offset){
+        sb.draw(dirt,offset.x,offset.y);
+        sb.draw(texture,offset.x,offset.y);
         if(state>0) {
             for (int i = 0; i <((float) (waterLevel) /(float) maxWater)*40; i++) {
-                sb.draw(water, 0, i * 19);
+                sb.draw(water, offset.x, i * 19+offset.y);
             }
             for (int i = 0; i < ((float)sunLevel  / (float)(state * 150))*40; i++) {
-                sb.draw(sun, 0, i * 19);
+                sb.draw(sun, offset.x, i * 19+offset.y);
             }
         }
     }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 public class TreeManager {
     Vector2 currentTree;
     Building[][] trees;
+    boolean[][] accessability;
     int maxTrees=10;
     int maxDepth=10;
 
@@ -20,59 +21,83 @@ public class TreeManager {
 
     Texture grass       =new Texture("grass.png");
     Texture underground=new Texture("underground.png");
-    Texture moveTexture=grass;
 
+    Texture moveTexture=grass;
+    Building moveBuilding=null;
+
+    Vector2 offset;
     public TreeManager(Forest forest){
         currentTree=new Vector2(0,0);
         trees=new Building[maxTrees][maxDepth];
+        setAccessability();
         time=0;
         xPos=0;
         yPos=0;
         xPos2=0;
         yPos2=0;
+        offset=new Vector2();
+    }
+    private void setAccessability(){
+        accessability=new boolean[maxTrees][maxDepth];
+        for (int i=0;i<this.trees.length;i++){
+            for (int j =0;j<this.trees[i].length;j++){
+                if (j==0){
+                    this.accessability[i][j]=true;
+                }else{
+                    this.accessability[i][j]=false;
+                }
+            }
+        }
     }
     public Building currentTree(){
         return trees[(int)currentTree.x][(int)currentTree.y];
     }
     public void goRight(){
-        if (currentTree.y==0){
-            moveTexture=grass;
-        }else{
-            moveTexture=underground;
+        if (accessability[(int)(currentTree.x+1)%maxTrees][(int)currentTree.y]) {
+            if (currentTree.y == 0) {
+                moveTexture = grass;
+            } else {
+                moveTexture = underground;
+            }
+            moveBuilding=trees[(int)currentTree.x][(int)currentTree.y];
+            currentTree.x = (currentTree.x + 1) % maxTrees;
+            xPos = 1080;
+            xPos2 = -1080;
+            yPos2 = 0;
         }
-        currentTree.x=(currentTree.x+1)%maxTrees;
-        xPos=1080;
-        xPos2=-1080;
-        yPos2=0;
     }
     public void goLeft(){
-        if (currentTree.y==0){
-            moveTexture=grass;
-        }else{
-            moveTexture=underground;
+        if (accessability[(int)((currentTree.x+maxTrees-1)%maxTrees)][(int)currentTree.y]){
+            if (currentTree.y == 0) {
+                moveTexture = grass;
+            } else {
+                moveTexture = underground;
+            }
+            moveBuilding=trees[(int)currentTree.x][(int)currentTree.y];
+            currentTree.x = (currentTree.x + maxTrees - 1) % maxTrees;
+            xPos = -1080;
+            xPos2 = 1080;
+            yPos2 = 0;
         }
-        currentTree.x=(currentTree.x+maxTrees-1)%maxTrees;
-        xPos=-1080;
-        xPos2=1080;
-        yPos2=0;
     }
     public void goDown(){
-        if (currentTree.y+1<maxDepth) {
+        if (currentTree.y+1<maxDepth&&accessability[(int)currentTree.x][(int)currentTree.y+1]) {
             if (currentTree.y==0){
                 moveTexture=grass;
             }else{
                 moveTexture=underground;
             }
+            moveBuilding=trees[(int)currentTree.x][(int)currentTree.y];
             currentTree.y += 1;
             yPos=-1920;
             yPos2=1920;
             xPos2=0;
-
         }
     }
     public void goUp(){
-        if (currentTree.y>0){
+        if (currentTree.y>0&&accessability[(int)currentTree.x][(int)(currentTree.y-1)]){
             moveTexture=underground;
+            moveBuilding=trees[(int)currentTree.x][(int)currentTree.y];
             currentTree.y -= 1;
             yPos=1920;
             yPos2=-1920;
@@ -104,20 +129,22 @@ public class TreeManager {
         }
         xPos*=.9;
         yPos*=.9;
-
+        offset.set(xPos+xPos2,yPos+yPos2);
     }
     public void render(SpriteBatch sb){
         if(currentTree.y>0) {
             sb.draw(underground,xPos,yPos);
-            sb.draw(moveTexture,xPos+xPos2,yPos+yPos2);
         }else{
             sb.draw(grass, xPos, yPos);
-            sb.draw(moveTexture,xPos+xPos2,yPos+yPos2);
+        }
+        if (xPos!=0||yPos!=0) {
+            sb.draw(moveTexture, xPos + xPos2, yPos + yPos2);
+            if(moveBuilding!=null) {
+                moveBuilding.render(sb, offset);
+            }
         }
         if (trees[(int)currentTree.x][(int)currentTree.y]!=null){
-            trees[(int)currentTree.x][(int)currentTree.y].render(sb);
+            trees[(int)currentTree.x][(int)currentTree.y].render(sb,offset);
         }
-
     }
-
 }

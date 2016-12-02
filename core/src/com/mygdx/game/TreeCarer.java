@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by Chandler on 11/20/2016.
@@ -30,8 +31,8 @@ public class TreeCarer extends Building {
     }
 
     @Override
-    public void render(SpriteBatch sb) {
-        sb.draw(treeCarer,0,0);
+    public void render(SpriteBatch sb,Vector2 offset) {
+        sb.draw(treeCarer,offset.x,offset.y);
     }
 
     @Override
