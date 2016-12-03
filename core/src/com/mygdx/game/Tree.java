@@ -34,7 +34,7 @@ public class Tree extends Building {
         sunLevel=0;
         switch (state){
             case 1:
-                texture=new Texture("tree1.png");
+                texture=new Texture("tree_realistic_1.png");
                 break;
             case 2:
                 texture=new Texture("tree2.png");
