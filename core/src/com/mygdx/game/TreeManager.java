@@ -25,7 +25,8 @@ public class TreeManager {
     Texture moveTexture=grass;
     Building moveBuilding=null;
 
-    Vector2 offset;
+    Vector2 offset1,offset2;
+
     public TreeManager(Forest forest){
         currentTree=new Vector2(0,0);
         trees=new Building[maxTrees][maxDepth];
@@ -35,7 +36,8 @@ public class TreeManager {
         yPos=0;
         xPos2=0;
         yPos2=0;
-        offset=new Vector2();
+        offset1=new Vector2();
+        offset2=new Vector2();
     }
     private void setAccessability(){
         accessability=new boolean[maxTrees][maxDepth];
@@ -129,7 +131,8 @@ public class TreeManager {
         }
         xPos*=.9;
         yPos*=.9;
-        offset.set(xPos+xPos2,yPos+yPos2);
+        offset1.set(xPos,yPos);
+        offset2.set(xPos+xPos2,yPos+yPos2);
     }
     public void render(SpriteBatch sb){
         if(currentTree.y>0) {
@@ -140,11 +143,11 @@ public class TreeManager {
         if (xPos!=0||yPos!=0) {
             sb.draw(moveTexture, xPos + xPos2, yPos + yPos2);
             if(moveBuilding!=null) {
-                moveBuilding.render(sb, offset);
+                moveBuilding.render(sb, offset2);
             }
         }
         if (trees[(int)currentTree.x][(int)currentTree.y]!=null){
-            trees[(int)currentTree.x][(int)currentTree.y].render(sb,offset);
+            trees[(int)currentTree.x][(int)currentTree.y].render(sb,offset1);
         }
     }
 }
