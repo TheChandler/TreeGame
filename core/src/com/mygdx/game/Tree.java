@@ -1,8 +1,11 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.Color;
+
 
 /**
  * Created by Chandler on 11/18/2016.
@@ -22,8 +25,13 @@ public class Tree extends Building {
     private Texture dirt=new Texture("dirt.png");
     private Texture sun=new Texture("sun.png");
     private Texture water=new Texture("water.png");
+
+    BitmapFont font;
     public Tree(){
         texture=new Texture("tree0.png");
+        font=new BitmapFont();
+        font.setColor(Color.BLACK);
+        font.getData().setScale(10);
         state=0;
         waterLevel=0;
         sunLevel=0;
@@ -90,5 +98,7 @@ public class Tree extends Building {
                 sb.draw(sun, offset.x, i * 19+offset.y);
             }
         }
+        font.draw(sb,"Water",offset.x,offset.y);
+        font.draw(sb,String.valueOf(waterLevel),offset.x,offset.y);
     }
 }
