@@ -22,6 +22,12 @@ public class SwipeDetector {
         deltax=0;
         deltay=0;
     }
+    public boolean testCollision(Vector2 vector1, Vector2 vector2){
+        return (Forest.touchX>vector1.x&&
+                Forest.touchX<vector2.x&&
+                Forest.touchY>vector1.y&&
+                Forest.touchX<vector2.y);
+    }
     public void handleInput(){
         if (isTouched){
             if (Gdx.input.isTouched()){

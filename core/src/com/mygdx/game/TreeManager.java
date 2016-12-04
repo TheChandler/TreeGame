@@ -1,5 +1,4 @@
 package com.mygdx.game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -26,11 +25,12 @@ public class TreeManager {
     Building moveBuilding=null;
 
     Vector2 offset1,offset2;
+    private boolean isSliding;
 
     public TreeManager(Forest forest){
         currentTree=new Vector2(0,0);
         trees=new Building[maxTrees][maxDepth];
-        setAccessability();
+        setAccessibility();
         time=0;
         xPos=0;
         yPos=0;
@@ -38,8 +38,9 @@ public class TreeManager {
         yPos2=0;
         offset1=new Vector2();
         offset2=new Vector2();
+        isSliding=false;
     }
-    private void setAccessability(){
+    private void setAccessibility(){
         accessability=new boolean[maxTrees][maxDepth];
         for (int i=0;i<this.trees.length;i++){
             for (int j =0;j<this.trees[i].length;j++){
@@ -70,6 +71,7 @@ public class TreeManager {
     }
     public void goLeft(){
         if (accessability[(int)((currentTree.x+maxTrees-1)%maxTrees)][(int)currentTree.y]){
+            isSliding=true;
             if (currentTree.y == 0) {
                 moveTexture = grass;
             } else {
@@ -84,6 +86,7 @@ public class TreeManager {
     }
     public void goDown(){
         if (currentTree.y+1<maxDepth&&accessability[(int)currentTree.x][(int)currentTree.y+1]) {
+            isSliding=true;
             if (currentTree.y==0){
                 moveTexture=grass;
             }else{
@@ -98,6 +101,7 @@ public class TreeManager {
     }
     public void goUp(){
         if (currentTree.y>0&&accessability[(int)currentTree.x][(int)(currentTree.y-1)]){
+            isSliding=true;
             moveTexture=underground;
             moveBuilding=trees[(int)currentTree.x][(int)currentTree.y];
             currentTree.y -= 1;
@@ -107,16 +111,19 @@ public class TreeManager {
         }
     }
     public void interact(){
+
+
         if (trees[(int)currentTree.x][(int)currentTree.y]!=null){
             trees[(int)currentTree.x][(int)currentTree.y].interact();
         }else{
             trees[(int)currentTree.x][(int)currentTree.y] = new Tree();
         }
+
     }
     public void update(float dt){
         time+=dt;
-        if (time>.1) {
-            time = 0;
+        if (time>1) {
+            time -= 1;
             for (int j = 0; j < maxDepth; j++) {
                 for (int i = 0; i < maxTrees; i++) {
                     if (trees[i][j] != null) {
@@ -129,8 +136,19 @@ public class TreeManager {
                 }
             }
         }
+    }
+    public void openMenu(){
+
+    }
+    private void slideOver(){
         xPos*=.9;
         yPos*=.9;
+        if (Math.abs(xPos)<1&&Math.abs(yPos)<1){
+            xPos=0;
+            yPos=0;
+            moveBuilding=null;
+            isSliding=false;
+        }
         offset1.set(xPos,yPos);
         offset2.set(xPos+xPos2,yPos+yPos2);
     }
@@ -140,7 +158,8 @@ public class TreeManager {
         }else{
             sb.draw(grass, xPos, yPos);
         }
-        if (xPos!=0||yPos!=0) {
+        if (isSliding) {
+            slideOver();
             sb.draw(moveTexture, xPos + xPos2, yPos + yPos2);
             if(moveBuilding!=null) {
                 moveBuilding.render(sb, offset2);

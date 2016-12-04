@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by Chandler on 11/18/2016.
@@ -32,6 +33,8 @@ public class Forest extends State {
 
     static int touchX=0,touchY=0;
 
+    Vector2 menuBottomLeft=new Vector2(864,1450),
+            menuBottomRight=new Vector2(1079,1375);
     public Forest(GameStateManager gsm){
         super(gsm);
         tm=new TreeManager(this);
@@ -63,7 +66,7 @@ public class Forest extends State {
                 if (sd.getDirection() == 0) {
                     super.mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
                     super.cam.unproject(super.mouse);
-                    tm.interact();
+                    handleTouch();
                 } else if (sd.getDirection() == 2) {
                     tm.goRight();
                 } else if (sd.getDirection() == 4) {
@@ -79,9 +82,14 @@ public class Forest extends State {
                 isTouched=true;
             }
         }
+    }
+    private void handleTouch(){
+        if (sd.testCollision(menuBottomLeft,menuBottomRight)){
+            tm.openMenu();
+        }
+        tm.interact();
 
     }
-
     @Override
     public void update(float dt) {
         handleInput();
@@ -91,13 +99,13 @@ public class Forest extends State {
     @Override
     public void render(SpriteBatch sb) {
         sb.draw(sky,0,0);
-
         sb.draw(sunBall,0,0);
         sb.draw(sunRays,1080-480,1920-480,422,422,844,844,1,1,rotate(),0,0,844,844,false,false);
+        tm.render(sb);
         sb.draw(numbers[(int)tm.currentTree.x],0,0);
         sb.draw(numbers[(int)tm.currentTree.y],100,0);
         sb.draw(dot,touchX,touchY);
-        tm.render(sb);
+
     }
     private float rotate(){
         rotation=(float)(rotation+.03);
