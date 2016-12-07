@@ -28,7 +28,7 @@ public class Tree extends Building {
     private Texture sunBlock=new Texture("sun.png");
     private Texture waterBlock=new Texture("water.png");
 
-    private int health,air,minerals,energy,water,sun;
+    public int health,air,minerals,energy,water,sun;
     private int healthRate,airRate,mineralRate,energyRate,waterRate,sunRate;
 
     BitmapFont font;
