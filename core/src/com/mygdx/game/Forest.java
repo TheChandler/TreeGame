@@ -32,9 +32,7 @@ public class Forest extends State {
     float rotation=0;
 
     static int touchX=0,touchY=0;
-
-    Vector2 menuBottomLeft=new Vector2(864,1450),
-            menuBottomRight=new Vector2(1079,1375);
+    Button openMenu = new Button(new Vector2(865,470),new Vector2(1080,545));
     public Forest(GameStateManager gsm){
         super(gsm);
         tm=new TreeManager(this);
@@ -84,11 +82,14 @@ public class Forest extends State {
         }
     }
     private void handleTouch(){
-        if (sd.testCollision(menuBottomLeft,menuBottomRight)){
+        System.out.println("HandleTouch");
+        if (openMenu.check(new Vector2(touchX,touchY))){
             tm.openMenu();
+            System.out.println("Open Menu");
+        }else{
+            tm.interact();
         }
-        tm.interact();
-
+        tm.touch(new Vector2(touchX,touchY));
     }
     @Override
     public void update(float dt) {

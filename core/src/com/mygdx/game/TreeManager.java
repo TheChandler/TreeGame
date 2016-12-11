@@ -20,12 +20,15 @@ public class TreeManager {
 
     Texture grass       =new Texture("grass.png");
     Texture underground=new Texture("underground.png");
+    Texture MenuButton = new Texture("MenuButton.png");
 
     Texture moveTexture=grass;
     Building moveBuilding=null;
 
     Vector2 offset1,offset2;
     private boolean isSliding;
+
+    Menu menu;
 
     public TreeManager(Forest forest){
         currentTree=new Vector2(0,0);
@@ -57,26 +60,20 @@ public class TreeManager {
     }
     public void goRight(){
         if (accessability[(int)(currentTree.x+1)%maxTrees][(int)currentTree.y]) {
-            if (currentTree.y == 0) {
-                moveTexture = grass;
-            } else {
-                moveTexture = underground;
-            }
+            isSliding=true;
+            moveTexture=getBackground();
             moveBuilding=trees[(int)currentTree.x][(int)currentTree.y];
             currentTree.x = (currentTree.x + 1) % maxTrees;
             xPos = 1080;
             xPos2 = -1080;
             yPos2 = 0;
+            System.out.println("Going right");
         }
     }
     public void goLeft(){
         if (accessability[(int)((currentTree.x+maxTrees-1)%maxTrees)][(int)currentTree.y]){
             isSliding=true;
-            if (currentTree.y == 0) {
-                moveTexture = grass;
-            } else {
-                moveTexture = underground;
-            }
+            moveTexture = getBackground();
             moveBuilding=trees[(int)currentTree.x][(int)currentTree.y];
             currentTree.x = (currentTree.x + maxTrees - 1) % maxTrees;
             xPos = -1080;
@@ -137,9 +134,7 @@ public class TreeManager {
             }
         }
     }
-    public void openMenu(){
 
-    }
     private void slideOver(){
         xPos*=.9;
         yPos*=.9;
@@ -148,25 +143,47 @@ public class TreeManager {
             yPos=0;
             moveBuilding=null;
             isSliding=false;
+            System.out.println("Done sliding");
         }
         offset1.set(xPos,yPos);
         offset2.set(xPos+xPos2,yPos+yPos2);
     }
-    public void render(SpriteBatch sb){
-        if(currentTree.y>0) {
-            sb.draw(underground,xPos,yPos);
-        }else{
-            sb.draw(grass, xPos, yPos);
+
+    public void touch(Vector2 cord){
+        if (menu!=null){
+            menu.touch(cord);
         }
+    }
+    public void openMenu(){
+        if (currentTree()!=null) {
+            menu = new Menu(currentTree());
+        }
+    }
+
+    private Texture getBackground(){
+        if (currentTree.y>0){
+            return underground;
+        }
+        return grass;
+    }
+    public void render(SpriteBatch sb){
+        sb.draw(getBackground(), xPos, yPos);
         if (isSliding) {
-            slideOver();
             sb.draw(moveTexture, xPos + xPos2, yPos + yPos2);
+            slideOver();
             if(moveBuilding!=null) {
                 moveBuilding.render(sb, offset2);
             }
         }
         if (trees[(int)currentTree.x][(int)currentTree.y]!=null){
             trees[(int)currentTree.x][(int)currentTree.y].render(sb,offset1);
+        }
+        sb.draw(MenuButton,0,0);
+        if (menu!=null){
+            menu.render(sb);
+            if (menu.close){
+                menu = null;
+            }
         }
     }
 }
