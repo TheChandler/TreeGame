@@ -108,14 +108,34 @@ public class TreeManager {
         }
     }
     public void interact(){
-
-
         if (trees[(int)currentTree.x][(int)currentTree.y]!=null){
             trees[(int)currentTree.x][(int)currentTree.y].interact();
         }else{
             trees[(int)currentTree.x][(int)currentTree.y] = new Tree();
         }
-
+    }
+    public void handleInput(SwipeDetector sd,Vector2 cords){
+        if (menu==null){
+            switch (sd.getDirection()) {
+                case (0):
+                    interact();
+                    break;
+                case (1):
+                    goUp();
+                    break;
+                case (2):
+                    goRight();
+                    break;
+                case (3):
+                    goDown();
+                    break;
+                case (4):
+                    goLeft();
+                    break;
+            }
+        }else{
+            menu.touch(cords);
+        }
     }
     public void update(float dt){
         time+=dt;
@@ -147,12 +167,6 @@ public class TreeManager {
         }
         offset1.set(xPos,yPos);
         offset2.set(xPos+xPos2,yPos+yPos2);
-    }
-
-    public void touch(Vector2 cord){
-        if (menu!=null){
-            menu.touch(cord);
-        }
     }
     public void openMenu(){
         if (currentTree()!=null) {

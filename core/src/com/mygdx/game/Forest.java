@@ -61,19 +61,7 @@ public class Forest extends State {
                 isTouched = true;
             } else {
                 isTouched=false;
-                if (sd.getDirection() == 0) {
-                    super.mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-                    super.cam.unproject(super.mouse);
-                    handleTouch();
-                } else if (sd.getDirection() == 2) {
-                    tm.goRight();
-                } else if (sd.getDirection() == 4) {
-                    tm.goLeft();
-                } else if (sd.getDirection() == 1){
-                    tm.goUp();
-                } else if (sd.getDirection() == 3){
-                    tm.goDown();
-                }
+                handleTouch();
             }
         }else{
             if (Gdx.input.isTouched()){
@@ -82,14 +70,12 @@ public class Forest extends State {
         }
     }
     private void handleTouch(){
-        System.out.println("HandleTouch");
-        if (openMenu.check(new Vector2(touchX,touchY))){
+        Vector2 cords= new Vector2(touchX,touchY);
+        if (openMenu.check(cords)){
             tm.openMenu();
-            System.out.println("Open Menu");
         }else{
-            tm.interact();
+            tm.handleInput(sd,cords);
         }
-        tm.touch(new Vector2(touchX,touchY));
     }
     @Override
     public void update(float dt) {
