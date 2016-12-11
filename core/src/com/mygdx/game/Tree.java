@@ -29,7 +29,7 @@ public class Tree extends Building {
     private Texture waterBlock=new Texture("water.png");
 
     private int treeLevel;
-    private int health,air,minerals,energy,water,sun;
+    public int health,air,minerals,energy,water,sun;
     private int healthRate,airRate,mineralRate,energyRate,waterRate,sunRate;
 
     BitmapFont font;

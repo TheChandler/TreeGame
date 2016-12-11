@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Menu {
     boolean isUpdating;
     Vector2 pos;
-    Texture texture=new Texture("LevelMenu.png");
+    Texture texture=new Texture("MenuLevel1.png");
     boolean close;
     boolean deleteThis;
     Button[] buttons;

@@ -13,4 +13,10 @@ public class AndroidLauncher extends AndroidApplication {
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		initialize(new TreeGame(), config);
 	}
+	@Override
+	protected void onDestroy(){
+
+	}
+
+
 }
