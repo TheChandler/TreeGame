@@ -25,9 +25,10 @@ public class Tree extends Building {
 
     private Texture texture;
     private Texture dirt=new Texture("dirt.png");
-    private Texture sunBlock=new Texture("sun.png");
+    //private Texture sunBlock=new Texture("sun.png");
     private Texture waterBlock=new Texture("water.png");
 
+    private int treeLevel;
     private int health,air,minerals,energy,water,sun;
     private int healthRate,airRate,mineralRate,energyRate,waterRate,sunRate;
 
@@ -38,6 +39,7 @@ public class Tree extends Building {
         font.setColor(Color.BLACK);
         font.getData().setScale(2);
         state=0;
+        treeLevel =0;
         waterLevel=0;
         sunLevel=0;
         water=0;
@@ -57,7 +59,7 @@ public class Tree extends Building {
         state++;
         switch (state){
             case 1:
-                texture=new Texture("tree_realistic_1.png");
+                texture=new Texture("sprout.png");
                 break;
             case 2:
                 texture=new Texture("tree2.png");
@@ -67,6 +69,7 @@ public class Tree extends Building {
                 break;
         }
     }
+
     public boolean deleteThis(){
         return deleteThis;
     }
@@ -95,6 +98,11 @@ public class Tree extends Building {
     }
     public void update(){
         addValues();
+    }
+    public void levelUpTree(){
+        //if() button to upgrade is pressed and
+        //amount of energy to level up is meet then tree will level up
+        ++treeLevel;
     }
     public void render(SpriteBatch sb,Vector2 offset){
         sb.draw(texture,offset.x,offset.y);
