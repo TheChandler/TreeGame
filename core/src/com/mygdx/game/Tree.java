@@ -14,39 +14,30 @@ import com.badlogic.gdx.graphics.Color;
  */
 
 public class Tree extends Building {
-    private boolean deleteThis=false;
+    private boolean deleteThis;
 
     private int state;
-    private int waterLevel;
-    private int maxWater;
-    private int sunLevel;
-    private int maxSun;
-
 
     private Texture texture;
     private Texture dirt=new Texture("dirt.png");
-    //private Texture sunBlock=new Texture("sun.png");
-    private Texture waterBlock=new Texture("water.png");
 
     private int treeLevel;
+<<<<<<< HEAD
     public int health,air,minerals,energy,water,sun;
+=======
+   
+>>>>>>> origin/Underground-Feature
     private int healthRate,airRate,mineralRate,energyRate,waterRate,sunRate;
+
+    public TreeStats treeStats;
 
     BitmapFont font;
     public Tree(){
+        deleteThis=false;
         texture=new Texture("tree0.png");
         font=new BitmapFont(Gdx.files.internal("code.fnt"));
-        font.setColor(Color.BLACK);
-        font.getData().setScale(2);
         state=0;
         treeLevel =0;
-        waterLevel=0;
-        sunLevel=0;
-        water=0;
-        sun=0;
-        minerals=0;
-        energy=0;
-        air=0;
         health=100;
         healthRate=0;
         airRate=1;
@@ -54,6 +45,7 @@ public class Tree extends Building {
         energyRate=1;
         waterRate=1;
         sunRate=1;
+        treeStats= new TreeStats();
     }
     private void upgrade(){
         state++;
@@ -79,22 +71,14 @@ public class Tree extends Building {
         dirt.dispose();
     }
     public void interact(){
-        if (state==0){
-            upgrade();
-        }
-        if (state<3){
-            waterLevel=maxWater;
-        }else if(state==3){
-            Supplies.addWood(5);
-            killTree();
-        }
+        upgrade();
     }
     private void addValues(){
-        water+=waterRate;
-        air+=airRate;
-        minerals+=mineralRate;
-        sun+=sunRate;
-        energy+=energyRate;
+        treeStats.addWater(waterRate);
+        treeStats.addAir(airRate);
+        treeStats.addMinerals(mineralRate);
+        treeStats.addSun(sunRate);
+        health+=healthRate;
     }
     public void update(){
         addValues();
@@ -106,10 +90,10 @@ public class Tree extends Building {
     }
     public void render(SpriteBatch sb,Vector2 offset){
         sb.draw(texture,offset.x,offset.y);
-        font.draw(sb, "Water " + water, offset.x + 750, offset.y + 940);
-        font.draw(sb, "Sun " + sun, offset.x + 750, offset.y + 830);
-        font.draw(sb, "Air " + air, offset.x + 750, offset.y + 720);
-        font.draw(sb, "Minerals " + minerals, offset.x + 750, offset.y + 1050);
+        font.draw(sb, "Water " + treeStats.water, offset.x + 750, offset.y + 940);
+        font.draw(sb, "Sun " + treeStats.sun, offset.x + 750, offset.y + 830);
+        font.draw(sb, "Air " + treeStats.air, offset.x + 750, offset.y + 720);
+        font.draw(sb, "Minerals " + treeStats.minerals, offset.x + 750, offset.y + 1050);
 
     }
 }

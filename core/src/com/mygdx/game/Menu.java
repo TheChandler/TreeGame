@@ -28,18 +28,25 @@ public class Menu {
         setButtons();
         tree = (Tree)t;
         font.setColor(Color.BLACK);
-        font.getData().setScale(2);
+        font.getData().setScale(1);
     }
     private void setButtons(){
         buttons = new Button[20];
         buttons[0]=new Button(new Vector2(433,163),new Vector2(723,259));
+        buttons[1]=new Button(new Vector2(648,1300),new Vector2(938,1379));
     }
     public void touch(Vector2 cord){
         for (int i =0;i<buttons.length;i++){
             if (buttons[i]!=null){
                 if (buttons[i].check(cord)){
-                    if (i==0){
-                        close=true;
+                    switch (i){
+                        case(0):
+                            close=true;
+                            break;
+                        case(1):
+                            if (tree.treeStats.canMakeEnergy()){
+                                tree.treeStats.createEnergy();
+                            }
                     }
                 }
             }
@@ -72,9 +79,10 @@ public class Menu {
             update();
         }
         sb.draw(texture,pos.x,pos.y);
-        font.draw(sb,Integer.toString(tree.water),pos.x+682,pos.y+1204);
-        font.draw(sb,Integer.toString(tree.minerals),pos.x+682,pos.y+1084);
-        font.draw(sb,Integer.toString(tree.sun),pos.x+682,pos.y+964);
-        font.draw(sb,Integer.toString(tree.air),pos.x+682,pos.y+844);
+        font.draw(sb,Integer.toString(tree.treeStats.water),pos.x+682,pos.y+1204);
+        font.draw(sb,Integer.toString(tree.treeStats.minerals),pos.x+682,pos.y+1084);
+        font.draw(sb,Integer.toString(tree.treeStats.sun),pos.x+682,pos.y+964);
+        font.draw(sb,Integer.toString(tree.treeStats.air),pos.x+682,pos.y+844);
+        font.draw(sb,Integer.toString(tree.treeStats.energy),pos.x+682,pos.y+1420);
     }
 }
