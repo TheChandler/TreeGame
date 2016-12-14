@@ -32,7 +32,6 @@ public class Forest extends State {
     float rotation=0;
 
     static int touchX=0,touchY=0;
-    Button openMenu = new Button(new Vector2(865,470),new Vector2(1080,545));
     public Forest(GameStateManager gsm){
         super(gsm);
         tm=new TreeManager(this);
@@ -71,11 +70,7 @@ public class Forest extends State {
     }
     private void handleTouch(){
         Vector2 cords= new Vector2(touchX,touchY);
-        if (openMenu.check(cords)){
-            tm.openMenu();
-        }else{
-            tm.handleInput(sd,cords);
-        }
+        tm.handleInput(sd,cords);
     }
     @Override
     public void update(float dt) {
@@ -89,9 +84,9 @@ public class Forest extends State {
         sb.draw(sunBall,0,0);
         sb.draw(sunRays,1080-480,1920-480,422,422,844,844,1,1,rotate(),0,0,844,844,false,false);
         tm.render(sb);
-        sb.draw(numbers[(int)tm.currentTree.x],0,0);
-        sb.draw(numbers[(int)tm.currentTree.y],100,0);
-        sb.draw(dot,touchX,touchY);
+      //sb.draw(numbers[(int)tm.currentTree.x],0,0);
+      //sb.draw(numbers[(int)tm.currentTree.y],100,0);
+      //sb.draw(dot,touchX,touchY);
 
     }
     private float rotate(){

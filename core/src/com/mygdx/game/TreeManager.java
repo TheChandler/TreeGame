@@ -29,6 +29,7 @@ public class TreeManager {
     private boolean isSliding;
 
     Menu menu;
+    Button openMenu = new Button(new Vector2(865,470),new Vector2(1080,545));
 
     public TreeManager(Forest forest){
         currentTree=new Vector2(0,0);
@@ -107,19 +108,27 @@ public class TreeManager {
             xPos2=0;
         }
     }
-    public void interact(){
+    public void interact(Vector2 cords){
         if (trees[(int)currentTree.x][(int)currentTree.y]!=null){
-            trees[(int)currentTree.x][(int)currentTree.y].interact();
+            if (openMenu.check(cords)){
+                openMenu();
+            }else {
+                trees[(int) currentTree.x][(int) currentTree.y].interact();
+                openMenu();
+            }
         }else{
             trees[(int)currentTree.x][(int)currentTree.y] = new Tree();
         }
     }
     public void handleInput(SwipeDetector sd,Vector2 cords){
-        if (menu==null){
             switch (sd.getDirection()) {
                 case (0):
-                    interact();
-                    break;
+                    if (menu==null){
+                        interact(cords);
+                        break;
+                    }else{
+                        menu.touch(cords);
+                    }
                 case (1):
                     goUp();
                     break;
@@ -133,14 +142,11 @@ public class TreeManager {
                     goLeft();
                     break;
             }
-        }else{
-            menu.touch(cords);
-        }
     }
     public void update(float dt){
         time+=dt;
-        if (time>1) {
-            time -= 1;
+        if (time>.45) {
+            time -= .45;
             for (int j = 0; j < maxDepth; j++) {
                 for (int i = 0; i < maxTrees; i++) {
                     if (trees[i][j] != null) {
@@ -181,18 +187,19 @@ public class TreeManager {
         return grass;
     }
     public void render(SpriteBatch sb){
-        sb.draw(getBackground(), xPos, yPos);
+
         if (isSliding) {
-            sb.draw(moveTexture, xPos + xPos2, yPos + yPos2);
             slideOver();
+            sb.draw(moveTexture, xPos + xPos2, yPos + yPos2);
             if(moveBuilding!=null) {
                 moveBuilding.render(sb, offset2);
             }
         }
+        sb.draw(getBackground(), xPos, yPos);
         if (trees[(int)currentTree.x][(int)currentTree.y]!=null){
             trees[(int)currentTree.x][(int)currentTree.y].render(sb,offset1);
         }
-        sb.draw(MenuButton,0,0);
+      //sb.draw(MenuButton,0,0);
         if (menu!=null){
             menu.render(sb);
             if (menu.close){
