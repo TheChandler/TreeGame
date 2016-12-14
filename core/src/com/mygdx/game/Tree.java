@@ -1,91 +1,73 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.Color;
+
+
 /**
  * Created by Chandler on 11/18/2016.
  */
 
 public class Tree extends Building {
-    private boolean deleteThis=false;
+    private boolean deleteThis;
 
     private int state;
-    private int waterLevel;
-    private int maxWater;
-    private int sunLevel;
-
-
 
     private Texture texture;
     private Texture dirt=new Texture("dirt.png");
-    private Texture sun=new Texture("sun.png");
-    private Texture water=new Texture("water.png");
-    public Tree(){
-        texture=new Texture("tree0.png");
-        state=0;
-        waterLevel=0;
-        sunLevel=0;
+
+
+    public TreeStats treeStats;
+
+    BitmapFont font;
+    public Tree() {
+        deleteThis = false;
+        texture = new Texture("tree0.png");
+        font = new BitmapFont(Gdx.files.internal("code.fnt"));
+        state = 0;
+        treeStats = new TreeStats();
     }
-    private void upgrade(){
-        state++;
-        maxWater=state*115;
-        sunLevel=0;
-        switch (state){
+    public void upgrade(){
+        switch (++state){
             case 1:
-                texture=new Texture("tree1.png");
+                texture=new Texture("sprout.png");
                 break;
             case 2:
                 texture=new Texture("tree2.png");
                 break;
             case 3:
                 texture=new Texture("tree3.png");
-                waterLevel=0;
-                sunLevel=0;
                 break;
         }
     }
+
     public boolean deleteThis(){
         return deleteThis;
     }
     private void killTree(){
         deleteThis = true;
-        state=0;
-        sunLevel=0;
-        texture=new Texture("tree0.png");
+        texture.dispose();
+        dirt.dispose();
     }
     public void interact(){
-        if (state==0){
-            upgrade();
-        }
-        if (state<3){
-            waterLevel=maxWater;
-        }else if(state==3){
-            Supplies.addWood(5);
-            killTree();
-        }
+        //upgrade();
+
     }
     public void update(){
-        if (state>0&&state<3) {
-            waterLevel--;
-            if (waterLevel == 0) {
-                killTree();
-            }
-            sunLevel+=1;
-            if (sunLevel >= state * 150 && state < 3 && waterLevel > 0) {
-                upgrade();
-            }
-        }
+        treeStats.addValues();
     }
-    public void render(SpriteBatch sb){
-        sb.draw(dirt,0,0);
-        sb.draw(texture,0,0);
-        if(state>0) {
-            for (int i = 0; i <((float) (waterLevel) /(float) maxWater)*40; i++) {
-                sb.draw(water, 0, i * 19);
-            }
-            for (int i = 0; i < ((float)sunLevel  / (float)(state * 150))*40; i++) {
-                sb.draw(sun, 0, i * 19);
-            }
-        }
+    public void render(SpriteBatch sb,Vector2 offset){
+        sb.draw(texture,offset.x,offset.y);
+        font.draw(sb, "Water " + (int)treeStats.water, offset.x + 750, offset.y + 940);
+        font.draw(sb, "Sun " + (int)treeStats.sun, offset.x + 750, offset.y + 830);
+        font.draw(sb, "Air " + (int)treeStats.air, offset.x + 750, offset.y + 720);
+        font.draw(sb, "Minerals " + (int)treeStats.minerals, offset.x + 750, offset.y + 1050);
+
+
     }
 }

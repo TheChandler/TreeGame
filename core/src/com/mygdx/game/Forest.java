@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by Chandler on 11/18/2016.
@@ -17,27 +18,31 @@ import com.badlogic.gdx.input.GestureDetector;
 
 public class Forest extends State {
     GameStateManager gsm;
-    Texture grass=new Texture("grass.png");
-    Texture sky=new Texture("sky.png");
-    Texture sunBall=new Texture("sunBall.png");
-    Texture sunRays=new Texture("sunRays.png");
-    Texture dot = new Texture("dot.png");
+    Texture sky         =new Texture("sky.png");
+    Texture sunBall     =new Texture("sunBall.png");
+    Texture sunRays     =new Texture("sunRays.png");
+    Texture dot         =new Texture("dot.png");
+
+    Texture[] numbers;
 
     TreeManager tm;
-    float time=0;
     SwipeDetector sd=new SwipeDetector();
     MyInputProcessor mip =new MyInputProcessor();
     boolean isTouched;
     float rotation=0;
 
-    int touchX,touchY;
-
-
-
+    static int touchX=0,touchY=0;
     public Forest(GameStateManager gsm){
         super(gsm);
-        tm=new TreeManager();
+        tm=new TreeManager(this);
         isTouched=false;
+        setNumberTextures();
+    }
+    private void setNumberTextures(){
+        numbers=new Texture[10];
+        for (int i=0;i<10;i++){
+            numbers[i]=new Texture(String.valueOf(i)+".png");
+        }
     }
 
 
@@ -55,44 +60,34 @@ public class Forest extends State {
                 isTouched = true;
             } else {
                 isTouched=false;
-                if (sd.getDirection() == 0) {
-                    super.mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-                    super.cam.unproject(super.mouse);
-                    tm.interact();
-                } else if (sd.getDirection() == 1) {
-                    tm.goRight();
-                } else if (sd.getDirection() == -1) {
-                    tm.goLeft();
-                }
+                handleTouch();
             }
         }else{
             if (Gdx.input.isTouched()){
                 isTouched=true;
-
             }
         }
-
     }
-
+    private void handleTouch(){
+        Vector2 cords= new Vector2(touchX,touchY);
+        tm.handleInput(sd,cords);
+    }
     @Override
     public void update(float dt) {
         handleInput();
-        time+=dt;
-        if (time>.2){
-            time=0;
-            tm.update();
-        }
+        tm.update(dt);
     }
 
     @Override
     public void render(SpriteBatch sb) {
-
         sb.draw(sky,0,0);
-        sb.draw(grass,Gdx.input.getDeltaX(),0);
         sb.draw(sunBall,0,0);
         sb.draw(sunRays,1080-480,1920-480,422,422,844,844,1,1,rotate(),0,0,844,844,false,false);
-        sb.draw(dot,touchX,touchY);
         tm.render(sb);
+      //sb.draw(numbers[(int)tm.currentTree.x],0,0);
+      //sb.draw(numbers[(int)tm.currentTree.y],100,0);
+      //sb.draw(dot,touchX,touchY);
+
     }
     private float rotate(){
         rotation=(float)(rotation+.03);
