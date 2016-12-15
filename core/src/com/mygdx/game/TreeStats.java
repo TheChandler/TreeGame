@@ -13,7 +13,7 @@ public class TreeStats {
         treeLevel=1;
         rootLevel=1;
         leafLevel=1;
-        energy=0;
+        energy=45;
         water=0;
         air=0;
         sun=0;
