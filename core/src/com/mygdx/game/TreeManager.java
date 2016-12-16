@@ -11,6 +11,7 @@ public class TreeManager {
     Vector2 currentTree;
     Building[][] trees;
     boolean[][] accessability;
+    boolean selectingTree;
     int maxTrees=10;
     int maxDepth=10;
 
@@ -28,7 +29,7 @@ public class TreeManager {
     Vector2 offset1,offset2;
     private boolean isSliding;
 
-    Menu menu;
+    MenuClass menu;
     Button openMenu = new Button(new Vector2(865,470),new Vector2(1080,545));
 
     public TreeManager(Forest forest){
@@ -43,6 +44,7 @@ public class TreeManager {
         offset1=new Vector2();
         offset2=new Vector2();
         isSliding=false;
+        selectingTree=false;
     }
     private void setAccessibility(){
         accessability=new boolean[maxTrees][maxDepth];
@@ -68,7 +70,6 @@ public class TreeManager {
             xPos = 1080;
             xPos2 = -1080;
             yPos2 = 0;
-            System.out.println("Going right");
         }
     }
     public void goLeft(){
@@ -114,21 +115,19 @@ public class TreeManager {
                 openMenu();
             }else {
                 trees[(int) currentTree.x][(int) currentTree.y].interact();
-                openMenu();
             }
         }else{
-            trees[(int)currentTree.x][(int)currentTree.y] = new Tree();
+            openInventoryMenu();
         }
     }
     public void handleInput(SwipeDetector sd,Vector2 cords){
+        if (menu!=null){
+            menu.touch(cords);
+        }else {
             switch (sd.getDirection()) {
                 case (0):
-                    if (menu==null){
-                        interact(cords);
-                        break;
-                    }else{
-                        menu.touch(cords);
-                    }
+                    interact(cords);
+                    break;
                 case (1):
                     goUp();
                     break;
@@ -142,8 +141,18 @@ public class TreeManager {
                     goLeft();
                     break;
             }
+        }
     }
     public void update(float dt){
+        if (menu!=null) {
+            if (menu.close()) {
+                if (selectingTree) {
+                    trees[(int) currentTree.x][(int) currentTree.y] = menu.building();
+                    selectingTree=false;
+                }
+                menu = null;
+            }
+        }
         time+=dt;
         if (time>.45) {
             time -= .45;
@@ -169,7 +178,6 @@ public class TreeManager {
             yPos=0;
             moveBuilding=null;
             isSliding=false;
-            System.out.println("Done sliding");
         }
         offset1.set(xPos,yPos);
         offset2.set(xPos+xPos2,yPos+yPos2);
@@ -178,6 +186,10 @@ public class TreeManager {
         if (currentTree()!=null) {
             menu = new Menu(currentTree());
         }
+    }
+    public void openInventoryMenu(){
+        menu=new InventoryMenu(currentTree());
+        selectingTree=true;
     }
 
     private Texture getBackground(){
@@ -199,12 +211,9 @@ public class TreeManager {
         if (trees[(int)currentTree.x][(int)currentTree.y]!=null){
             trees[(int)currentTree.x][(int)currentTree.y].render(sb,offset1);
         }
-      //sb.draw(MenuButton,0,0);
+        sb.draw(MenuButton,0,0);
         if (menu!=null){
             menu.render(sb);
-            if (menu.close){
-                menu = null;
-            }
         }
     }
 }

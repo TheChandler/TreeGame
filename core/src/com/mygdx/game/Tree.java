@@ -67,7 +67,5 @@ public class Tree extends Building {
         font.draw(sb, "Sun " + (int)treeStats.sun, offset.x + 750, offset.y + 830);
         font.draw(sb, "Air " + (int)treeStats.air, offset.x + 750, offset.y + 720);
         font.draw(sb, "Minerals " + (int)treeStats.minerals, offset.x + 750, offset.y + 1050);
-
-
     }
 }

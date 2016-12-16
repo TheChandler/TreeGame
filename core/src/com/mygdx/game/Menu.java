@@ -11,12 +11,11 @@ import com.badlogic.gdx.math.Vector2;
  * Created by Chandler on 12/6/2016.
  */
 
-public class Menu {
+public class Menu extends MenuClass{
     boolean isUpdating;
     Vector2 pos;
     Texture texture=new Texture("MenuLevel1.png");
-    boolean close;
-    boolean deleteThis;
+    boolean close,closing;
     Button[] buttons;
     Tree tree;
     BitmapFont font=new BitmapFont(Gdx.files.internal("code.fnt"));
@@ -24,7 +23,6 @@ public class Menu {
         pos=new Vector2(1920,0);
         isUpdating=true;
         close = false;
-        deleteThis=false;
         setButtons();
         tree = (Tree)t;
         font.setColor(Color.BLACK);
@@ -45,7 +43,7 @@ public class Menu {
                 if (buttons[i].check(cord)){
                     switch (i){
                         case(0):
-                            close=true;
+                            closing=true;
                             break;
                         case(1):
                             makeEnergy();
@@ -95,18 +93,23 @@ public class Menu {
             isUpdating=false;
         }
     }
-    private void close(){
-        close = true;
+    public boolean close(){
+        return close;
     }
+
+    @Override
+    public Building building() {
+        return null;
+    }
+
     private void closing(){
         pos.x+=108;
         if (pos.x>1080){
-            deleteThis=true;
-            close=false;
+            close=true;
         }
     }
     public void render(SpriteBatch sb){
-        if (close){
+        if (closing){
             closing();
         }
         if (isUpdating) {
