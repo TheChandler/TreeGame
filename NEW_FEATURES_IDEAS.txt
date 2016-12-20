@@ -1,0 +1,29 @@
+Save Progress
+
+Launch Menu
+
+Inventory System
+-Images for the inventory menu 
+-tabs for sorting what types of items we have(seeds, tools, power ups)
+
+Shop
+-buy different backgrounds 
+-buy different seeds for different trees
+
+Creatures
+-Insects
+-Squirels
+-birds
+
+Buildings
+
+
+
+
+pixel plants 
+I want to make the plants grow based on how they are upgraded
+
+if the user adds more roots i want more roots to be created on screen
+same for leaves and branches
+
+im thinking that if we use textures on a grid and change how the 
