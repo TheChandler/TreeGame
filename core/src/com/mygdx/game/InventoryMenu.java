@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
@@ -10,15 +11,33 @@ import com.badlogic.gdx.math.Vector2;
 public class InventoryMenu extends MenuClass {
     Building building;
     boolean close;
+    private Texture texture=new Texture("inventoryMenu2.png");
+    private Button closeButton=new Button(508,530,567,570);
+    private Button[][] inventorySlots;
+
+    private int tempx,tempy; //delete these later
+    private Texture tempTex=new Texture("squar.png");
     public InventoryMenu(Building b){
         System.out.println("Menu Opened");
         building=b;
         close=false;
+        initializeMenu();
+        tempx=-120;
+        tempy=-120;
+    }
+    private void initializeMenu() {
+        inventorySlots=new Button[7][6];
+        for (int i = 0; i <7; i++) {
+            for (int j=0;j<6;j++){
+                inventorySlots[i][j]=new Button(i*120+120,j*120+600,i*120+240,j*120+720);
+            }
+        }
     }
 
     @Override
     public void render(SpriteBatch sb) {
-
+        sb.draw(texture,90,479);
+        sb.draw(tempTex,tempx+121,tempy+600);
     }
 
     @Override
@@ -30,12 +49,19 @@ public class InventoryMenu extends MenuClass {
     }
 
     public void touch(Vector2 cords){
-        if (cords.y>900){
+        if(closeButton.check(cords)){
             close=true;
-            System.out.println("close");
-        }else{
-            System.out.println("Chose Tree");
-            building=new Tree();
+        }else if(cords.x>120&&cords.x<960&&cords.y>600&&cords.y<1320){
+            if (inventorySlots[(int)(cords.x-120)/120][(int)(cords.y-600)/120].check(cords)){
+                tempx=120*(int)((cords.x-120)/120);
+                tempy=120*(int)((cords.y-600)/120);
+                System.out.println(tempx/120+tempy/120*6);
+                if (Inventory.count[tempx/120+tempy/120*6]>0) {
+                    building = Inventory.items[tempx / 120 + tempy / 120 * 6];
+                    Inventory.count[tempx/120+tempy/120*6]--;
+                }
+            }
         }
+
     }
 }

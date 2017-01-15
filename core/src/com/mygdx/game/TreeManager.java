@@ -45,6 +45,7 @@ public class TreeManager {
         offset2=new Vector2();
         isSliding=false;
         selectingTree=false;
+        Inventory.initialize();
     }
     private void setAccessibility(){
         accessability=new boolean[maxTrees][maxDepth];

@@ -41,7 +41,7 @@ public class Forest extends State {
     private void setNumberTextures(){
         numbers=new Texture[10];
         for (int i=0;i<10;i++){
-            numbers[i]=new Texture(String.valueOf(i)+".png");
+            numbers[i]=new Texture("numbers\\"+String.valueOf(i)+".png");
         }
     }
 
@@ -84,8 +84,8 @@ public class Forest extends State {
         sb.draw(sunBall,0,0);
         sb.draw(sunRays,1080-480,1920-480,422,422,844,844,1,1,rotate(),0,0,844,844,false,false);
         tm.render(sb);
-      //sb.draw(numbers[(int)tm.currentTree.x],0,0);
-      //sb.draw(numbers[(int)tm.currentTree.y],100,0);
+        sb.draw(numbers[(int)tm.currentTree.x],0,0);
+        sb.draw(numbers[(int)tm.currentTree.y],100,0);
       //sb.draw(dot,touchX,touchY);
 
     }

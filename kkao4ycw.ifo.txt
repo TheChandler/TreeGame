@@ -1,0 +1,41 @@
+﻿Merge remote-tracking branch 'origin/Underground-Feature' into Underground-Feature
+
+# Conflicts:
+#	core/src/com/mygdx/game/Tree.java
+#
+# It looks like you may be committing a merge.
+# If this is not correct, please remove the file
+#	.git/MERGE_HEAD
+# and try again.
+
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch Underground-Feature
+# Your branch and 'origin/Underground-Feature' have diverged,
+# and have 2 and 1 different commits each, respectively.
+#   (use "git pull" to merge the remote branch into yours)
+#
+# All conflicts fixed but you are still merging.
+#
+# Changes to be committed:
+#	modified:   android/assets/IconMineral.png
+#	renamed:    android/assets/0.png -> android/assets/numbers/0.png
+#	renamed:    android/assets/1.png -> android/assets/numbers/1.png
+#	renamed:    android/assets/2.png -> android/assets/numbers/2.png
+#	renamed:    android/assets/3.png -> android/assets/numbers/3.png
+#	renamed:    android/assets/4.png -> android/assets/numbers/4.png
+#	renamed:    android/assets/5.png -> android/assets/numbers/5.png
+#	renamed:    android/assets/6.png -> android/assets/numbers/6.png
+#	renamed:    android/assets/7.png -> android/assets/numbers/7.png
+#	renamed:    android/assets/8.png -> android/assets/numbers/8.png
+#	renamed:    android/assets/9.png -> android/assets/numbers/9.png
+#	new file:   android/assets/squar.png
+#	modified:   core/src/com/mygdx/game/Button.java
+#	modified:   core/src/com/mygdx/game/Forest.java
+#	modified:   core/src/com/mygdx/game/Inventory.java
+#	modified:   core/src/com/mygdx/game/InventoryMenu.java
+#	modified:   core/src/com/mygdx/game/Tree.java
+#	modified:   core/src/com/mygdx/game/TreeManager.java
+#
+
