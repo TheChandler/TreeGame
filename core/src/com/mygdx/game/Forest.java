@@ -19,18 +19,12 @@ import com.badlogic.gdx.math.Vector2;
 public class Forest extends State {
     GameStateManager gsm;
     Texture sky         =new Texture("sky.png");
-    Texture sunBall     =new Texture("sunBall.png");
-    Texture sunRays     =new Texture("sunRays.png");
-    Texture dot         =new Texture("dot.png");
 
     Texture[] numbers;
 
     TreeManager tm;
     SwipeDetector sd=new SwipeDetector();
-    MyInputProcessor mip =new MyInputProcessor();
     boolean isTouched;
-    float rotation=0;
-
     static int touchX=0,touchY=0;
     public Forest(GameStateManager gsm){
         super(gsm);
@@ -81,17 +75,9 @@ public class Forest extends State {
     @Override
     public void render(SpriteBatch sb) {
         sb.draw(sky,0,0);
-        sb.draw(sunBall,0,0);
-        sb.draw(sunRays,1080-480,1920-480,422,422,844,844,1,1,rotate(),0,0,844,844,false,false);
         tm.render(sb);
         sb.draw(numbers[(int)tm.currentTree.x],0,0);
         sb.draw(numbers[(int)tm.currentTree.y],100,0);
-      //sb.draw(dot,touchX,touchY);
-
-    }
-    private float rotate(){
-        rotation=(float)(rotation+.03);
-        return rotation;
     }
 
     @Override

@@ -203,12 +203,12 @@ public class TreeManager {
 
         if (isSliding) {
             slideOver();
-            sb.draw(moveTexture, xPos + xPos2, yPos + yPos2);
+            sb.draw(moveTexture, xPos + xPos2, yPos + yPos2+960);
             if(moveBuilding!=null) {
                 moveBuilding.render(sb, offset2);
             }
         }
-        sb.draw(getBackground(), xPos, yPos);
+        sb.draw(getBackground(), xPos, yPos+960);
         if (trees[(int)currentTree.x][(int)currentTree.y]!=null){
             trees[(int)currentTree.x][(int)currentTree.y].render(sb,offset1);
         }
