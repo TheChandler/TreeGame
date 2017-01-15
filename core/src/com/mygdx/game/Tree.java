@@ -63,7 +63,7 @@ public class Tree extends Building {
     }
     public void render(SpriteBatch sb,Vector2 offset){
         sb.draw(texture,offset.x,offset.y);
-        font.draw(sb, "Water " + (int)treeStats.water, offset.x + 750, offset.y + 940);
+        font.draw(sb, er " + (int)treeStats.water, offset.x + 750, offset.y + 940);
         font.draw(sb, "Sun " + (int)treeStats.sun, offset.x + 750, offset.y + 830);
         font.draw(sb, "Air " + (int)treeStats.air, offset.x + 750, offset.y + 720);
         font.draw(sb, "Minerals " + (int)treeStats.minerals, offset.x + 750, offset.y + 1050);
