@@ -20,12 +20,16 @@ public class Tree extends Building {
 
     private Texture texture;
     private Texture dirt=new Texture("dirt.png");
+    private Texture waterIcon=new Texture("icon-water.png"),
+            mineralIcon=new Texture("IconMineral.png"),
+            sunIcon=new Texture("IconSUN.png");
 
 
     public TreeStats treeStats;
-
+    private DynamicTree dt;
     BitmapFont font;
     public Tree() {
+        dt=new DynamicTree(30,500,0);
         deleteThis = false;
         texture = new Texture("tree0.png");
         font = new BitmapFont(Gdx.files.internal("code.fnt"));
@@ -62,10 +66,15 @@ public class Tree extends Building {
         treeStats.addValues();
     }
     public void render(SpriteBatch sb,Vector2 offset){
+
         sb.draw(texture,offset.x,offset.y);
-        font.draw(sb, er " + (int)treeStats.water, offset.x + 750, offset.y + 940);
-        font.draw(sb, "Sun " + (int)treeStats.sun, offset.x + 750, offset.y + 830);
+        sb.draw(waterIcon,offset.x+900,offset.y+880,90,90);
+        sb.draw(sunIcon,offset.x+900,offset.y+770,90,90);
+        sb.draw(mineralIcon,offset.x+900,offset.y+990,90,90);
+        font.draw(sb, "" + (int)treeStats.minerals, offset.x + 750, offset.y + 1050);
+        font.draw(sb, "" + (int)treeStats.water, offset.x + 750, offset.y + 940);
+        font.draw(sb, "" + (int)treeStats.sun, offset.x + 750, offset.y + 830);
         font.draw(sb, "Air " + (int)treeStats.air, offset.x + 750, offset.y + 720);
-        font.draw(sb, "Minerals " + (int)treeStats.minerals, offset.x + 750, offset.y + 1050);
+        dt.render(sb);
     }
 }
