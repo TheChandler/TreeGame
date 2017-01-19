@@ -17,7 +17,7 @@ public class Button {
         ur=new Vector2(urx,ury);
     }
     public boolean check(Vector2 cord){
-        System.out.println(cord+" "+bl+" "+ur+" "+(cord.x>bl.x&&cord.x<ur.x&&cord.y>bl.y&&cord.y<ur.y));
+       // System.out.println(cord+" "+bl+" "+ur+" "+(cord.x>bl.x&&cord.x<ur.x&&cord.y>bl.y&&cord.y<ur.y));
         return (cord.x>bl.x&&cord.x<ur.x&&cord.y>bl.y&&cord.y<ur.y);
     }
 }
