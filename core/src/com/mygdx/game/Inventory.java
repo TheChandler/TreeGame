@@ -26,4 +26,10 @@ public class Inventory {
         }
         return false;
     }
+    public static Building getBuildingById(int g){
+        if (g==1){
+            return new Tree();
+        }
+        return null;
+    }
 }

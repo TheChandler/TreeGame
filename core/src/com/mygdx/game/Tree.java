@@ -29,7 +29,7 @@ public class Tree extends Building {
     private DynamicTree dt;
     BitmapFont font;
     public Tree() {
-        dt=new DynamicTree(590,960,30,500,0);
+        dt=new DynamicTree(590,960,30,150,90,30);
         deleteThis = false;
         texture = new Texture("tree0.png");
         font = new BitmapFont(Gdx.files.internal("code.fnt"));

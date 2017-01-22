@@ -52,7 +52,13 @@ public class InventoryMenu extends MenuClass {
         if(closeButton.check(cords)){
             close=true;
         }else if(cords.x>120&&cords.x<960&&cords.y>600&&cords.y<1320){
-            //rewrite this garbage, it doesn't work
+            tempx=(int)(cords.x-120-cords.x%120);
+            tempy=(int)(cords.y-600-cords.y%120);
+            System.out.println(tempx+" "+tempy);
+            int inv=tempx/120+tempy/120*6;
+            if (Inventory.count[inv]>0) {
+                building = Inventory.getBuildingById(Inventory.itemId[inv]);
+            }
         }
 
     }
