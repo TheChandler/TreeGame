@@ -19,7 +19,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Forest extends State {
     GameStateManager gsm;
     Texture sky         =new Texture("sky.png");
-
+   Texture botMenu = new Texture("MenuBottom.png");
     Texture[] numbers;
 
     TreeManager tm;
@@ -74,10 +74,14 @@ public class Forest extends State {
 
     @Override
     public void render(SpriteBatch sb) {
+
         sb.draw(sky,0,0);
         tm.render(sb);
+
         sb.draw(numbers[(int)tm.currentTree.x],0,0);
         sb.draw(numbers[(int)tm.currentTree.y],100,0);
+        //sb.draw(botMenu,80,80);
+
     }
 
     @Override
