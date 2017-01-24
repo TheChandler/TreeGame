@@ -56,6 +56,7 @@ public class InventoryMenu extends MenuClass {
         if(closeButton.check(cords)){
             close=true;
         }else if(cords.x>120&&cords.x<960&&cords.y>600&&cords.y<1320){
+
             if (inventorySlots[(int)(cords.x-initSize)/initSize][(int)(cords.y-600)/initSize].check(cords)){
                 tempx=120*(int)((cords.x-120)/120);
                 tempy=120*(int)((cords.y-600)/120);
@@ -64,6 +65,12 @@ public class InventoryMenu extends MenuClass {
                     building = Inventory.items[tempx / 120 + tempy / 120 * 6];
                     Inventory.count[tempx/120+tempy/120*6]--;
                 }
+            tempx=(int)(cords.x-120-cords.x%120);
+            tempy=(int)(cords.y-600-cords.y%120);
+            System.out.println(tempx+" "+tempy);
+            int inv=tempx/120+tempy/120*6;
+            if (Inventory.count[inv]>0) {
+                building = Inventory.getBuildingById(Inventory.itemId[inv]);
             }
         }
 

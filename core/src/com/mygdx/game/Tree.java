@@ -26,9 +26,10 @@ public class Tree extends Building {
 
 
     public TreeStats treeStats;
-
+    private DynamicTree dt;
     BitmapFont font;
     public Tree() {
+        dt=new DynamicTree(590,960,30,150,90,30);
         deleteThis = false;
         texture = new Texture("tree0.png");
         font = new BitmapFont(Gdx.files.internal("code.fnt"));
@@ -59,12 +60,14 @@ public class Tree extends Building {
     }
     public void interact(){
         //upgrade();
+        dt.grow();
 
     }
     public void update(){
         treeStats.addValues();
     }
     public void render(SpriteBatch sb,Vector2 offset){
+
         sb.draw(texture,offset.x,offset.y);
         sb.draw(waterIcon,offset.x+900,offset.y+880,90,90);
         sb.draw(sunIcon,offset.x+900,offset.y+770,90,90);
@@ -73,5 +76,6 @@ public class Tree extends Building {
         font.draw(sb, "" + (int)treeStats.water, offset.x + 750, offset.y + 940);
         font.draw(sb, "" + (int)treeStats.sun, offset.x + 750, offset.y + 830);
         font.draw(sb, "Air " + (int)treeStats.air, offset.x + 750, offset.y + 720);
+
     }
 }
