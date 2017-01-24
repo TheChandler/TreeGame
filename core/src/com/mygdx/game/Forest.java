@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 
@@ -18,8 +19,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Forest extends State {
     GameStateManager gsm;
-    Texture sky         =new Texture("sky.png");
-   Texture botMenu = new Texture("MenuBottom.png");
+   Texture sky         =new Texture("sky.png");
+     Texture botMenu =  new Texture("menuBottom.png");
     Texture[] numbers;
 
     TreeManager tm;
@@ -78,9 +79,14 @@ public class Forest extends State {
         sb.draw(sky,0,0);
         tm.render(sb);
 
+        sb.draw(botMenu,0,-180);
+
+        tm.render(sb);
+
+
         sb.draw(numbers[(int)tm.currentTree.x],0,0);
         sb.draw(numbers[(int)tm.currentTree.y],100,0);
-        //sb.draw(botMenu,80,80);
+
 
     }
 

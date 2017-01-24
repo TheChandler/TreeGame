@@ -30,8 +30,8 @@ public class TreeManager {
     private boolean isSliding;
 
     MenuClass menu;
-    Button openMenu = new Button(new Vector2(865,470),new Vector2(1080,545));
-
+    Button openMenu = new Button(new Vector2(0,180),new Vector2(1080,545));
+    Button openInvenMenu = new Button(new Vector2(0,0),new Vector2(180,180));
     public TreeManager(Forest forest){
         currentTree=new Vector2(0,0);
         trees=new Building[maxTrees][maxDepth];
@@ -110,17 +110,21 @@ public class TreeManager {
             xPos2=0;
         }
     }
-    public void interact(Vector2 cords){
-        if (trees[(int)currentTree.x][(int)currentTree.y]!=null){
-            if (openMenu.check(cords)){
+    public void interact(Vector2 cords) {
+        if (trees[(int) currentTree.x][(int) currentTree.y] != null) {
+
+            if (openMenu.check(cords)) {
                 openMenu();
-            }else {
+            } else {
                 trees[(int) currentTree.x][(int) currentTree.y].interact();
             }
-        }else{
-            openInventoryMenu();
         }
-    }
+            //if (openInvenMenu.check(cords)) {
+                openInventoryMenu();
+
+
+        }
+
     public void handleInput(SwipeDetector sd,Vector2 cords){
         if (menu!=null){
             menu.touch(cords);

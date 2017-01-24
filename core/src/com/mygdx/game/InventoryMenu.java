@@ -11,12 +11,14 @@ import com.badlogic.gdx.math.Vector2;
 public class InventoryMenu extends MenuClass {
     Building building;
     boolean close;
-    private Texture texture=new Texture("inventoryMenu2.png");
-    private Button closeButton=new Button(508,530,567,570);
+    private Texture invenMenu=new Texture("inventoryMenu3.png");
+    private Button closeButton=new Button(0,0,200,200);
     private Button[][] inventorySlots;
 
     private int tempx,tempy; //delete these later
-    private Texture tempTex=new Texture("squar.png");
+    private Texture tempTex=new Texture("square180.png");
+    private Texture blueButton = new Texture("tempButton.png");
+    private int initSize = 180;
     public InventoryMenu(Building b){
         System.out.println("Menu Opened");
         building=b;
@@ -26,17 +28,19 @@ public class InventoryMenu extends MenuClass {
         tempy=-120;
     }
     private void initializeMenu() {
-        inventorySlots=new Button[7][6];
-        for (int i = 0; i <7; i++) {
-            for (int j=0;j<6;j++){
-                inventorySlots[i][j]=new Button(i*120+120,j*120+600,i*120+240,j*120+720);
+        inventorySlots=new Button[5][4];
+
+        for (int i = 0; i <5; i++) {
+            for (int j=0;j<4;j++){
+                inventorySlots[i][j]=new Button(i*initSize+180,j*initSize+640,i*initSize+280,j*initSize+760);
             }
         }
     }
 
     @Override
     public void render(SpriteBatch sb) {
-        sb.draw(texture,90,479);
+        sb.draw(invenMenu,0,270);
+        sb.draw(blueButton,0,0);
         sb.draw(tempTex,tempx+121,tempy+600);
     }
 
@@ -52,7 +56,7 @@ public class InventoryMenu extends MenuClass {
         if(closeButton.check(cords)){
             close=true;
         }else if(cords.x>120&&cords.x<960&&cords.y>600&&cords.y<1320){
-            if (inventorySlots[(int)(cords.x-120)/120][(int)(cords.y-600)/120].check(cords)){
+            if (inventorySlots[(int)(cords.x-initSize)/initSize][(int)(cords.y-600)/initSize].check(cords)){
                 tempx=120*(int)((cords.x-120)/120);
                 tempy=120*(int)((cords.y-600)/120);
                 System.out.println(tempx/120+tempy/120*6);
