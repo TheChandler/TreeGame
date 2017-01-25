@@ -11,8 +11,8 @@ import com.badlogic.gdx.math.Vector2;
 public class InventoryMenu extends MenuClass {
     Building building;
     boolean close;
-    private Texture invenMenu = new Texture("inventoryMenu3.png");
-    private Button closeButton = new Button(0, 0, 200, 200);
+    private Texture invenMenu = new Texture("inventoryMenu1.1.png");
+    private Button closeButton = new Button(0, 0, 360, 176);
     private Button[][] inventorySlots;
 
     private int tempx, tempy; //delete these later
@@ -41,7 +41,7 @@ public class InventoryMenu extends MenuClass {
 
     @Override
     public void render(SpriteBatch sb) {
-        sb.draw(invenMenu, 0, 270);
+        sb.draw(invenMenu, 0, 180);
         sb.draw(blueButton, 0, 0);
         sb.draw(tempTex, tempx + 121, tempy + 600);
     }

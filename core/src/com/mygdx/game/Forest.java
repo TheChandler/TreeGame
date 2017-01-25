@@ -20,7 +20,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Forest extends State {
     GameStateManager gsm;
    Texture sky         =new Texture("sky.png");
-     Texture botMenu =  new Texture("menuBottom.png");
+     Texture botMenu =  new Texture("menuBottom1.0.png");
     Texture[] numbers;
 
     TreeManager tm;
