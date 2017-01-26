@@ -32,9 +32,11 @@ public class TreeManager {
     private boolean isSliding;// Something to check if the game needs to be drawing 2 seperate trees, backgrounds ect. It only needs to draw two while the player is switching between tree spots.
 
     MenuClass menu; //This is the generic menu class. All menus you want to open on this screen should extend the menu class.
-    Button openMenu = new Button(new Vector2(0,180),new Vector2(1080,545));//we probably don't need this anymore. This opens the stats.
+    Button openMenu = new Button(new Vector2(880,1720),new Vector2(1920,1080));//we probably don't need this anymore. This opens the stats. I moved it to the top right corner for now. Though atm you can't open it because you can't get a tree in the game
 
-    Button openInvenMenu = new Button(0,0,500,500);//we should proably have 3 of ethese for the the three menus you want.
+    Button openInvenMenu = new Button(0,0,360,180);
+    Button openToolsMenu = new Button(360,0,720,180);
+    Button openShopMenu = new Button(720,0,1080,180);
     public TreeManager(Forest forest){
         currentTree=new Vector2(0,0);
         trees=new Building[maxTrees][maxDepth];
@@ -120,9 +122,13 @@ public class TreeManager {
     public void interact(Vector2 cords) {
 
         if (openInvenMenu.check(cords)) {
-                openInventoryMenu();
-        }
-        //it can only interact if the tree exitst
+            openInventoryMenu();
+        }else if(openToolsMenu.check(cords)){
+            openToolMenu();
+        } else if (openShopMenu.check(cords)) {
+            openShop();
+        }else
+        //it can only interact if the tree exitst and none of the three menu buttons were hit
         if (trees[(int) currentTree.x][(int) currentTree.y] != null) {
             //checks if stat menu should open
             if (openMenu.check(cords)) {
@@ -209,6 +215,12 @@ public class TreeManager {
     public void openInventoryMenu(){
         menu=new InventoryMenu(currentTree());
         selectingTree=true;
+    }
+    public void openToolMenu(){
+        menu = new ToolsMenu();
+    }
+    public void openShop(){
+        menu = new ShopMenu();
     }
 
     private Texture getBackground(){

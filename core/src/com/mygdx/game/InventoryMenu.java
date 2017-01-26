@@ -32,9 +32,9 @@ public class InventoryMenu extends MenuClass {
     }
     @Override
     public void render(SpriteBatch sb) {
-        sb.draw(invenMenu, 0, 130);
+        sb.draw(invenMenu, 0, 180);
         sb.draw(exitButton, 0, 0);
-        sb.draw(selection, tempx + 96, tempy + 225);//plus 96 and 225 to move it up and to the right to match with where the menu boxes start.
+        sb.draw(selection, tempx + 96, tempy + 245);//plus 96 and 225 to move it up and to the right to match with where the menu boxes start.
     }
 
     @Override
