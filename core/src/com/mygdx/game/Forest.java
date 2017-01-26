@@ -17,12 +17,16 @@ import com.badlogic.gdx.math.Vector2;
  * Created by Chandler on 11/18/2016.
  */
 
-public class Forest extends State {
-    GameStateManager gsm;
-   Texture sky         =new Texture("sky.png");
-     Texture botMenu =  new Texture("menuBottom1.0.png");
-    Texture[] numbers;
 
+
+//this class is for the more technical stuff I guess. it probably shouldn't be named forest, but I was making up the names as I went with out any Idea what class was going to do what.
+//It handles stuff like transforming the player's touch input to be consistant across devices. (the input's location is given in terms of screen coordinates, which change with screen dimensions.
+//it also does stuff like the numbers determining when a swipe happens. If the player is doing a new touch or if they were already pressing somewhere. without that when the player holds down the game will interpret as a new touch every frame
+//This class probably shouldn't be drawing anything at all really, but I'll fix it later. Move the textures into tree manager
+public class Forest extends State {
+    Texture sky         =new Texture("sky.png");
+    Texture botMenu =  new Texture("menuBottom1.0.png");
+    Texture[] numbers;
     TreeManager tm;
     SwipeDetector sd=new SwipeDetector();
     boolean isTouched;
@@ -79,7 +83,7 @@ public class Forest extends State {
         sb.draw(sky,0,0);
         tm.render(sb);
 
-        sb.draw(botMenu,0,-180);
+        sb.draw(botMenu,0,-180);//why not just make the image not have a 180px space?
 
         tm.render(sb);
 

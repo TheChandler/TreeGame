@@ -9,41 +9,32 @@ import com.badlogic.gdx.math.Vector2;
  */
 
 public class InventoryMenu extends MenuClass {
-    Building building;
-    boolean close;
+    Building building;      //This is basically a way for this menu to send information to the parent class. There should probably be a better way to do this. Maybe just sending back
+                            // a number and the parent class, TreeManager, knows what the number means?
+    boolean close;         //This acts as a flag that the parent class checks to know if it should close the menu.
     private Texture invenMenu = new Texture("inventoryMenu1.1.png");
-    private Button closeButton = new Button(0, 0, 360, 176);
-    private Button[][] inventorySlots;
+    private Button closeButton = new Button(0, 0, 299, 160);    //range of the button that closes the menu
+    private Button inventoryRange=new Button(96,65,985,654);
+    //^^^^ The bottom left of all the inventory spaces to the top right of all of the inventory spaces.
+    // Not really a button it just checks if the player clicked within the range. Prevents out of bounds errors for the inventory array.
 
-    private int tempx, tempy; //delete these later
-    private Texture tempTex = new Texture("square180.png");
-    private Texture blueButton = new Texture("tempButton.png");
+    private int tempx, tempy;                                   //these are the coordinates of the selection.
+    private Texture selection = new Texture("square140.png");       //this is the image that goes over the currently selected box.
+    private Texture exitButton = new Texture("tempButton.png"); //The button you press to close the menu
     private int initSize = 180;
 
     public InventoryMenu(Building b) {
         System.out.println("Menu Opened");
-        building = b;
-        close = false;
-        initializeMenu();
-        tempx = -120;
+        building = b;// I can't remember exactly how this interacts with TreeManager. It might be unimportant.
+        close = false;//The menus shouldn't close initially so this is false.
+        tempx = -3000; //initially the player shouldn't see any of the boxes as selected. This is the easiest way to do that
         tempy = -120;
     }
-
-    private void initializeMenu() {
-        inventorySlots = new Button[5][4];
-
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 4; j++) {
-                inventorySlots[i][j] = new Button(i * initSize + 180, j * initSize + 640, i * initSize + 280, j * initSize + 760);
-            }
-        }
-    }
-
     @Override
     public void render(SpriteBatch sb) {
-        sb.draw(invenMenu, 0, 180);
-        sb.draw(blueButton, 0, 0);
-        sb.draw(tempTex, tempx + 121, tempy + 600);
+        sb.draw(invenMenu, 0, 130);
+        sb.draw(exitButton, 0, 0);
+        sb.draw(selection, tempx + 96, tempy + 225);//plus 96 and 225 to move it up and to the right to match with where the menu boxes start.
     }
 
     @Override
@@ -56,27 +47,23 @@ public class InventoryMenu extends MenuClass {
     }
 
     public void touch(Vector2 cords) {
-        if (closeButton.check(cords)) {
+        if (closeButton.check(cords)) {//checks if the player is trying to close the menu
             close = true;
-        } else if (cords.x > 120 && cords.x < 960 && cords.y > 600 && cords.y < 1320) {
-
-            if (inventorySlots[(int) (cords.x - initSize) / initSize][(int) (cords.y - 600) / initSize].check(cords)) {
-                tempx = 120 * (int) ((cords.x - 120) / 120);
-                tempy = 120 * (int) ((cords.y - 600) / 120);
-                System.out.println(tempx / 120 + tempy / 120 * 6);
-                if (Inventory.count[tempx / 120 + tempy / 120 * 6] > 0) {
-                    // building = Inventory.count[tempx / 120 + tempy / 120 * 6];
-                    Inventory.count[tempx / 120 + tempy / 120 * 6]--;
-                }
-                tempx = (int) (cords.x - 120 - cords.x % 120);
-                tempy = (int) (cords.y - 600 - cords.y % 120);
-                System.out.println(tempx + " " + tempy);
-                int inv = tempx / 120 + tempy / 120 * 6;
-                if (Inventory.count[inv] > 0) {
-                    building = Inventory.getBuildingById(Inventory.itemId[inv]);
-                }
-            }
-
+        } else if (inventoryRange.check(cords)) {//checks if the player is touching within the appropriate area to select an inventory item.
+            processInventorySelection(cords);    //there's a lot of stuff to do if the player is touching in the appropriate area so it's its own function
         }
+    }
+    private void processInventorySelection(Vector2 cords){
+        //Offsetting the coordinates because the actual first box you can select is at 96,225. This makes it so that I can do calculations with that as 0,0
+        int x= (int)cords.x-96;
+        int y= (int)cords.y-225;
+        //the space from the bottom left of one box to the bottom right of the next is 150 pixels.
+        //so we can divide by 150 to determine how many boxes over and up the picked
+        x/=150;
+        y/=150;
+        tempx=(int)x*150;
+        tempy=(int)y*150;
+        //this seems pointless to divide then multiply by the same number, but when they're divided by 150 it only gives a whole number. Multiplying that number by 150 lines it up with the boxes on the menu image.
+        //otherwise the selection box would show up exactly where the player pressed. Not lined up
     }
 }

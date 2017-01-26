@@ -8,31 +8,33 @@ import com.badlogic.gdx.math.Vector2;
  */
 
 public class TreeManager {
-    Vector2 currentTree;
-    Building[][] trees;
-    boolean[][] accessability;
-    boolean selectingTree;
+    //This is the class that actually does a lot of stuff.
+    //it has stuff that should probably be removed like the ability to go up or down to a new tree spot and checking if the player is able to scroll to the next tree spot.
+    Vector2 currentTree;        //It's a vector2 because it's the location of tree currently on screen. This is probably a dumb thing to do. could just be int x,y;
+    Building[][] trees;         // a 2d array of building objects. Probably doesn't need to be 2d unless we're going to add trees above or below our current trees
+    boolean[][] accessability; //this checks if the player can go the spot they are trying to go to. Like when they swipe left or right.
+    boolean selectingTree;     //This is part of a system that should be reworked. When a menu is opened this can be set to true. Then when the menu is closed it grabs the building from the menu and puts it in the current spot
     int maxTrees=10;
-    int maxDepth=10;
+    int maxDepth=10;  //another thing for moving up/down
 
-    float xPos,yPos;
-    float xPos2,yPos2;
-    float time;
+    float xPos,yPos;    //rendering posistion of the main tree you're looking at
+    float xPos2,yPos2;  //position of the tree that is sliding off the screen
+    float time;         //I actually don't know what this is at all. Did you add this?
 
     Texture grass       =new Texture("grass.png");
     Texture underground=new Texture("underground.png");
     Texture MenuButton = new Texture("MenuButton.png");
 
-    Texture moveTexture=grass;
-    Building moveBuilding=null;
+    Texture moveTexture=grass;  //texture of the background that is moving off screen. Probably doesn't need to exist unless we're going to have different backgrounds on each tree
+    Building moveBuilding=null; //the tree that's moving off screen
 
-    Vector2 offset1,offset2;
-    private boolean isSliding;
+    Vector2 offset1,offset2;//This is how much each screen is offset by when it's moving. I think we only need 1 of these.
+    private boolean isSliding;// Something to check if the game needs to be drawing 2 seperate trees, backgrounds ect. It only needs to draw two while the player is switching between tree spots.
 
-    MenuClass menu;
-    Button openMenu = new Button(new Vector2(0,180),new Vector2(1080,545));
+    MenuClass menu; //This is the generic menu class. All menus you want to open on this screen should extend the menu class.
+    Button openMenu = new Button(new Vector2(0,180),new Vector2(1080,545));//we probably don't need this anymore. This opens the stats.
 
-    Button openInvenMenu = new Button(0,0,500,500);
+    Button openInvenMenu = new Button(0,0,500,500);//we should proably have 3 of ethese for the the three menus you want.
     public TreeManager(Forest forest){
         currentTree=new Vector2(0,0);
         trees=new Building[maxTrees][maxDepth];
@@ -48,6 +50,7 @@ public class TreeManager {
         selectingTree=false;
         Inventory.initialize();
     }
+    //accessibility refers to the ability to navigate to each tree spot.
     private void setAccessibility(){
         accessability=new boolean[maxTrees][maxDepth];
         for (int i=0;i<this.trees.length;i++){
@@ -60,9 +63,11 @@ public class TreeManager {
             }
         }
     }
+    //this just returns the tree that's currently on screen
     public Building currentTree(){
         return trees[(int)currentTree.x][(int)currentTree.y];
     }
+   //Below methods are for navigation. Godown and goUp aren't currently used
     public void goRight(){
         if (accessability[(int)(currentTree.x+1)%maxTrees][(int)currentTree.y]) {
             isSliding=true;
@@ -111,26 +116,25 @@ public class TreeManager {
             xPos2=0;
         }
     }
+
     public void interact(Vector2 cords) {
-        //openInventoryMenu();
-        System.out.print(openInvenMenu.check(cords));
+
         if (openInvenMenu.check(cords)) {
                 openInventoryMenu();
         }
+        //it can only interact if the tree exitst
         if (trees[(int) currentTree.x][(int) currentTree.y] != null) {
-
+            //checks if stat menu should open
             if (openMenu.check(cords)) {
                 openMenu();
+            } else {
+                //if the player didn't try to open the menu it calls the tree.interact method. What that does is up to the tree.
+                trees[(int) currentTree.x][(int) currentTree.y].interact();}
             }
-            else {trees[(int) currentTree.x][(int) currentTree.y].interact();}
-
-            }
-            //else {trees[(int) currentTree.x][(int) currentTree.y].interact();}
-
         }
 
 
-
+    //this is just the controls. only happens if the player tapped the screen. 0 is no swipe 1 is swiped up 2 is swiped right 3 is down
     public void handleInput(SwipeDetector sd,Vector2 cords){
         if (menu!=null){
             menu.touch(cords);
@@ -154,9 +158,12 @@ public class TreeManager {
             }
         }
     }
+    //Update doesn't get called at a regular pace. When the game slows down it gets called less often. float dt stands for delta time. This can be used to account for the time change, but I don't really use it
     public void update(float dt){
+        //if the menu is open it checks if it should close it.
         if (menu!=null) {
             if (menu.close()) {
+                //if the menu should be closed it checks if the player was selecting a tree. if they player was then it takes the tree out of the menu and puts it in the current spot
                 if (selectingTree) {
                     trees[(int) currentTree.x][(int) currentTree.y] = menu.building();
                     selectingTree=false;
@@ -164,6 +171,7 @@ public class TreeManager {
                 menu = null;
             }
         }
+        //this is the only place dt is used. it limits updates to only once every .45 seconds. these limits only apply to the trees.
         time+=dt;
         if (time>.45) {
             time -= .45;
